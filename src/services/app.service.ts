@@ -50,4 +50,24 @@ export class AppService {
       return result;
     }
   }
+
+  private parseId(id) {
+    if (/^\d+$/.test(id)) return parseInt(id);
+    throw new HttpException('Id is invalid', HttpStatus.BAD_REQUEST);
+  }
+
+  async findContributors(id: string) {
+    const repository = await this.repositoryRepo.findOne({
+      where: { id: this.parseId(id) },
+      relations: [
+        'contributors',
+      ]
+    });
+
+    if (!repository) {
+      throw new HttpException('Repository does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    return repository.contributors;
+  }
 }

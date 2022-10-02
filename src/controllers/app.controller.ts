@@ -11,7 +11,12 @@ export class AppController {
   }
 
   @Get('repository')
-  async findAllRepositories(@Query() query) {
+  async findAllRepositories(@Query() query: string) {
     return await this.appService.findAllRepositories(query);
+  }
+
+  @Get('repository/:id/contributions')
+  async findContributors(@Param('id') repositoryId: string) {
+    return await this.appService.findContributors(repositoryId);
   }
 }
