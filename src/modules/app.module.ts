@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RepositoryEntity } from 'src/entities/repository.entity';
+import { User } from 'src/entities/user.entity';
 import { ormConfig } from '../config/ormconfig';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
@@ -20,7 +22,7 @@ import { DataModule } from './data.module';
     entities: ormConfig.entities,
     synchronize: false,
     database: ormConfig.database,
-  }), DataModule],
+  }), TypeOrmModule.forFeature([User, RepositoryEntity]), DataModule],
   controllers: [AppController],
   providers: [AppService],
 })
