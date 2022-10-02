@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { DataService } from '../services//data.service';
 
-@Controller('api/v1')
+@Controller()
 export class DataController {
   constructor(
     private readonly dataService: DataService
@@ -9,8 +9,6 @@ export class DataController {
 
   @Get('sync')
   async syncDB(): Promise<any> {
-    return 'sync complete';
+    return this.dataService.syncDB();
   }
-
-
 }

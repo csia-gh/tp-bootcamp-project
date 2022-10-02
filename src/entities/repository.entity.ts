@@ -1,12 +1,14 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
 
-@Entity()
-export class Repository {
+@Entity({ name: 'repository' })
+export class RepositoryEntity {
   @PrimaryColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.repositories)
+  @ManyToOne(() => User, (user) => user.repositories, {
+    cascade: ["insert"],
+  })
   owner: User;
 
   @Column()
@@ -18,12 +20,15 @@ export class Repository {
   @Column()
   html_url: string;
 
-  @Column()
+  @Column({ nullable: true })
   language: string;
 
   @Column()
   stargazers_count: number;
 
-  @ManyToMany(() => User, (user) => user.contributions)
+  @ManyToMany(() => User, (user) => user.contributions, {
+    cascade: ["insert"],
+  })
+  @JoinTable({ name: 'contributions' })
   contributors: User[];
 }

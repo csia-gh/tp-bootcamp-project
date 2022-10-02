@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from '../config/ormconfig';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
+import { DataModule } from './data.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -19,7 +20,7 @@ import { AppService } from '../services/app.service';
     entities: ormConfig.entities,
     synchronize: false,
     database: ormConfig.database,
-  })],
+  }), DataModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
-import { Repository } from './repository.entity';
+import { RepositoryEntity } from './repository.entity';
 
 @Entity()
 export class User {
@@ -18,10 +18,9 @@ export class User {
   @Column()
   type: string;
 
-  @OneToMany(() => Repository, (repository) => repository.owner)
-  repositories: Repository[];
+  @OneToMany(() => RepositoryEntity, (repository) => repository.owner)
+  repositories: RepositoryEntity[];
 
-  @ManyToMany(() => Repository, repository => repository.contributors)
-  @JoinTable({ name: 'contributions' })
-  contributions: Repository[];
+  @ManyToMany(() => RepositoryEntity, repository => repository.contributors)
+  contributions: RepositoryEntity[];
 }
