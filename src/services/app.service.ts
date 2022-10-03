@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RepositoryEntity } from 'src/entities/repository.entity';
-import { User } from 'src/entities/user.entity';
-import { RepositoriesResponse } from 'src/types/repositoryResponse.interface';
+import { RepositoryEntity } from '../entities/repository.entity';
+import { User } from '../entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import { RepositoryResponse } from '../types/repositoryResponse.interface';
 
 @Injectable()
 export class AppService {
@@ -37,31 +37,18 @@ export class AppService {
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    return await queryBuilder.getMany();
+    return await queryBuilder
+      .leftJoinAndSelect('repository.contributors', 'contributors')
+      .getMany();
   }
 
-  private async attachContributionsCount(repositories): Promise<RepositoriesResponse[]> {
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-
-    const repositoriesWithContributionsCount = await Promise.all(repositories.map(async repository => {
-      const contributionsCount = await queryRunner.query(`SELECT COUNT(*) FROM contributions WHERE "repositoryId"=${repository.id}`);
-      repository.contributionsCount = contributionsCount[0].count;
-      return repository;
-    }));
-
-    await queryRunner.release();
-
-    return repositoriesWithContributionsCount;
-  }
-
-  async findRepositories(query): Promise<RepositoriesResponse[]> {
+  async findRepositories(query): Promise<RepositoryResponse[]> {
     const isEmpty = Object.keys(query).length === 0;
     let repositories;
 
     if (isEmpty) {
       repositories = await this.repositoryRepo.find({
-        relations: ['owner']
+        relations: ['owner', 'contributors']
       });
     } else {
       const key = Object.keys(query)[0];
@@ -73,9 +60,16 @@ export class AppService {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    const repositoriesWithContributionsCount = await this.attachContributionsCount(repositories);
+    return this.buildRepositoryResponses(repositories);
+  }
 
-    return repositoriesWithContributionsCount;
+  private buildRepositoryResponses(repositories: RepositoryEntity[]): RepositoryResponse[] {
+    return repositories.map(repository => {
+      const contributionsCount = repository.contributors.length;
+      const repostoryResponse = { ...repository, contributionsCount } as RepositoryResponse;
+      delete repostoryResponse.contributors;
+      return repostoryResponse;
+    });
   }
 
   async findContributors(id: string): Promise<User[]> {

@@ -1,6 +1,6 @@
 import { User } from 'src/entities/user.entity';
 
-export interface RepositoriesResponse {
+export interface RepositoryResponse {
   id: number;
 
   owner: User;
@@ -14,6 +14,8 @@ export interface RepositoriesResponse {
   language: string;
 
   stargazers_count: number;
+
+  contributors?: User[];
 
   contributionsCount: number;
 }
