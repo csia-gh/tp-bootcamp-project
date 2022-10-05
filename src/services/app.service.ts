@@ -13,11 +13,6 @@ export class AppService {
     @InjectRepository(User) private userRepo: Repository<User>,
   ) { }
 
-  // private parseId(id) {
-  //   if (/^\d+$/.test(id)) return parseInt(id);
-  //   throw new HttpException('Id is invalid', HttpStatus.BAD_REQUEST);
-  // }
-
   private async filterRepositories(key: string, value: string) {
     const queryBuilder = this.repositoryRepo
       .createQueryBuilder('repository');

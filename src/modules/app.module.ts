@@ -11,10 +11,6 @@ import { DataModule } from './data.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from '../middlewares/logger.middleware';
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-
-
 
 @Module({
   imports: [
