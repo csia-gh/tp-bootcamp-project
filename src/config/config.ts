@@ -10,7 +10,6 @@ export default {
   node_env: process.env.NODE_ENV || 'development',
   port: process.env.PORT || 3000,
 
-
   // db options
   db_host: process.env.DB_HOST || 'localhost',
   db_port: process.env.DB_PORT || 5432,
@@ -20,4 +19,8 @@ export default {
   db_connection_limit: process.env.DB_CONNECTION_LIMIT || 12,
   orm_migration_dir: process.env.ORM_ENTITIES_DIR || 'migrations',
   orm_entities_dir: process.env.ORM_MIGRATION_DIR || 'entities',
+
+  // redis
+  redis_host: process.env.REDIS_HOST || 'localhost',
+  redis_port: process.env.REDIS_PORT || 6379
 };

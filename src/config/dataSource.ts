@@ -10,7 +10,6 @@ const AppDataSource = new DataSource({
   migrations: ormConfig.migrations,
   entities: ormConfig.entities,
   database: ormConfig.database,
-  extra: ormConfig.extra,
   synchronize: false,
   migrationsRun: true,
 } as unknown as DataSourceOptions);

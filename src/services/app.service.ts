@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RepositoryEntity } from '../entities/repository.entity';
 import { User } from '../entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
-import { RepositoryResponse } from '../types/repositoryResponse.interface';
+import { RepositoryResponse } from '../types/RepositoryResponse';
 
 @Injectable()
 export class AppService {
@@ -13,14 +13,10 @@ export class AppService {
     @InjectRepository(User) private userRepo: Repository<User>,
   ) { }
 
-  getHello(): string {
-    return 'Hellooo, api is listening...';
-  }
-
-  private parseId(id) {
-    if (/^\d+$/.test(id)) return parseInt(id);
-    throw new HttpException('Id is invalid', HttpStatus.BAD_REQUEST);
-  }
+  // private parseId(id) {
+  //   if (/^\d+$/.test(id)) return parseInt(id);
+  //   throw new HttpException('Id is invalid', HttpStatus.BAD_REQUEST);
+  // }
 
   private async filterRepositories(key: string, value: string) {
     const queryBuilder = this.repositoryRepo
@@ -65,16 +61,16 @@ export class AppService {
 
   private buildRepositoryResponses(repositories: RepositoryEntity[]): RepositoryResponse[] {
     return repositories.map(repository => {
-      const contributionsCount = repository.contributors.length;
-      const repostoryResponse = { ...repository, contributionsCount } as RepositoryResponse;
+      const contributorsCount = repository.contributors.length;
+      const repostoryResponse = { ...repository, contributorsCount } as RepositoryResponse;
       delete repostoryResponse.contributors;
       return repostoryResponse;
     });
   }
 
-  async findContributors(id: string): Promise<User[]> {
+  async findContributors(id: number): Promise<User[]> {
     const repository = await this.repositoryRepo.findOne({
-      where: { id: this.parseId(id) },
+      where: { id },
       relations: [
         'contributors',
       ]
