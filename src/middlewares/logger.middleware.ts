@@ -3,26 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { logOnRequest, logOnResponse } from '../logger/logger';
 
-
-
-
-
-  // console.log({
-  //   time: new Date().toUTCString(),
-  //   fromIP: req.headers['x-forwarded-for'] ||
-  //     req.connection.remoteAddress,
-  //   method: req.method,
-  //   originalUri: req.originalUrl,
-  //   uri: req.url,
-  //   requestData: req.body,
-  //   responseData: body,
-  //   referer: req.headers.referer || '',
-  //   ua: req.headers['user-agent']
-  // });
-
-
-
-
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   constructor(

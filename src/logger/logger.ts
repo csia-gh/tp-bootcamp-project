@@ -17,7 +17,7 @@ export const logOnResponse = (response: Response, logger: Logger, body: any) => 
   delete headersMod.authorization;
   delete headersMod.cookie;
 
-  const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(headersMod, null, 4)}\nresponse-body: ${JSON.stringify(JSON.parse(body), null, 4)}`;
+  const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(headersMod, null, 4)}\nresponse-body: ${body}`;
 
   if (statusCode >= 500) {
     logger.error({
