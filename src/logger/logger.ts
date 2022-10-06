@@ -1,35 +1,36 @@
-const {
-  createLogger,
-  format,
-  transports,
-} = require('winston');
-const {
-  timestamp,
-  combine,
-  printf,
-  colorize,
-  prettyPrint
-} = format;
+import { Logger } from '@nestjs/common';
+import { Request, Response } from 'express';
 
+export const logOnRequest = (request: Request, logger: Logger) => {
+  const { method, path, headers, body } = request;
+  const headersMod = { ...headers };
+  delete headersMod.authorization;
+  delete headersMod.cookie;
+  logger.log('info', {
+    message: `${method} ${path}\nrequest-headers: ${JSON.stringify(headersMod, null, 4)}\nrequest-body: ${JSON.stringify(body, null, 4)}`,
+  });
+};
 
-const logFormat = printf(({
-  level,
-  message,
-  timestamp,
-}) => {
-  return `${timestamp} ${level}: ${message}`;
-});
+export const logOnResponse = (response: Response, logger: Logger, body: any) => {
+  const { statusCode } = response;
+  const headersMod = { ...response.getHeaders() };
+  delete headersMod.authorization;
+  delete headersMod.cookie;
 
-export const logger = createLogger({
-  format: combine(
-    colorize(),
-    prettyPrint(),
-    timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    logFormat
-  ),
-  transports: [
-    new transports.Console()
-  ]
-});
+  const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(headersMod, null, 4)}\nresponse-body: ${JSON.stringify(JSON.parse(body), null, 4)}`;
+
+  if (statusCode >= 500) {
+    logger.error({
+      message: logContent,
+    });
+  } else if (statusCode >= 400) {
+    logger.warn({
+      message: logContent,
+    });
+  } else {
+    logger.log('info', {
+      message: logContent,
+    });
+  }
+};
+

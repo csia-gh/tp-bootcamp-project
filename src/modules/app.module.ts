@@ -1,6 +1,6 @@
 import { CacheInterceptor, CacheModule, MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { RepositoryEntity } from '../entities/repository.entity';
 import { User } from '../entities/user.entity';
 import { ormConfig } from '../config/ormconfig';
@@ -11,9 +11,39 @@ import { DataModule } from './data.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from '../middlewares/logger.middleware';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 @Module({
   imports: [
+    WinstonModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        transports: [
+          new winston.transports.Console(),
+          new winston.transports.File({
+            filename: `${process.cwd()}/${configService.get('LOG_PATH')}`,
+          }),
+        ],
+        format: winston.format.combine(
+          winston.format.colorize(),
+          winston.format.errors({
+            stack: true
+          }),
+          winston.format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+          }),
+          winston.format.printf(({
+            level,
+            message,
+            timestamp,
+            stack
+          }) => {
+            return `${timestamp} ${level}: ${stack || message}`;
+          }),
+        ),
+      }),
+      inject: [ConfigService],
+    }),
     ConfigModule.forRoot({
       isGlobal: true
     }),

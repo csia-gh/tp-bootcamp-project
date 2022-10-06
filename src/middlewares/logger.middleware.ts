@@ -1,35 +1,61 @@
-import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
+import { Injectable, NestMiddleware, Logger, Inject } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '../logger/logger';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { logOnRequest, logOnResponse } from '../logger/logger';
+
+
+
+
+
+  // console.log({
+  //   time: new Date().toUTCString(),
+  //   fromIP: req.headers['x-forwarded-for'] ||
+  //     req.connection.remoteAddress,
+  //   method: req.method,
+  //   originalUri: req.originalUrl,
+  //   uri: req.url,
+  //   requestData: req.body,
+  //   responseData: body,
+  //   referer: req.headers.referer || '',
+  //   ua: req.headers['user-agent']
+  // });
+
+
+
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  private logger = new Logger('HTTP');
+  constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) { }
 
   use(request: Request, response: Response, next: NextFunction): void {
-    const { method, path, headers, body } = request;
+    // logOnRequest(request, this.logger);
 
-    const headersMod = { ...headers };
-    delete headersMod.authorization;
-    delete headersMod.cookie;
-    logger.info(`${method} ${path}\nrequest-headers: ${JSON.stringify(headersMod, null, 4)}\nrequest-body: ${JSON.stringify(body, null, 4)}`);
+    const oldWrite = response.write;
+    const oldEnd = response.end;
 
-    response.on('finish', () => {
-      const { statusCode } = response;
-      const headersMod = { ...response.getHeaders() };
-      delete headersMod.authorization;
-      delete headersMod.cookie;
+    const chunks = [];
 
-      const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(headersMod, null, 4)}`;
-      if (statusCode >= 500) {
-        logger.error(logContent);
-      } else if (statusCode >= 400) {
-        logger.warn(logContent);
-      } else {
-        logger.info(logContent);
+    // @ts-ignore
+    response.write = (...restArgs) => {
+      chunks.push(Buffer.from(restArgs[0]));
+      oldWrite.apply(response, restArgs);
+    };
+
+    // @ts-ignore
+    response.end = (...restArgs) => {
+      if (restArgs[0]) {
+        chunks.push(Buffer.from(restArgs[0]));
       }
-    });
+
+      const body = Buffer.concat(chunks).toString('utf8');
+
+      logOnResponse(response, this.logger, body);
+
+      oldEnd.apply(response, restArgs);
+    };
 
     next();
-  }
+  };
 }
