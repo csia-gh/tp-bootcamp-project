@@ -10,7 +10,7 @@ export class LoggerMiddleware implements NestMiddleware {
   ) { }
 
   use(request: Request, response: Response, next: NextFunction): void {
-    // logOnRequest(request, this.logger);
+    logOnRequest(request, this.logger);
 
     const oldWrite = response.write;
     const oldEnd = response.end;
