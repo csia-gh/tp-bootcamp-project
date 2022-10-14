@@ -2,12 +2,17 @@ import { useRouter } from "next/router";
 
 import Link from 'next/link';
 import * as styles from './Sidebar.styles';
-import { FaCampground, FaTimes } from 'react-icons/fa';
+import { FaCampground, FaTimes, FaRegWindowMinimize } from 'react-icons/fa';
 
 import sidebarLinks from '../../config/sidebarLinks';
 
 function Sidebar({ isOpen, setIsOpen }) {
+
+
   const router = useRouter();
+
+
+
 
   return (
     <styles.Sidebar open={isOpen}>
@@ -33,6 +38,10 @@ function Sidebar({ isOpen, setIsOpen }) {
                 <styles.LinkTitle>{item.title}</styles.LinkTitle>
               </styles.MenuLinks>
             </Link>
+
+            {
+              item.testPath && item.testPath(router.asPath) && <styles.SubMenu>{item.subMenu}</styles.SubMenu>
+            }
           </styles.MenuItem>
         );
       })}

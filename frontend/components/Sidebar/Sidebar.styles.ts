@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Sidebar = styled.aside<{ open: boolean; }>`
   position: relative;
+  z-index: 100;
   width: 100vw;
   height: 100vh;
   padding: 0 0.75rem;
@@ -51,11 +52,15 @@ export const CloseMenu = styled.span`
 
 export const MenuItem = styled.li`
   list-style: none;
-  display: flex;
-  align-items: center;
   justify-content: start;
   width: 100%;
   padding: 0.5rem 0;
+
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  
+
 `;
 
 export const MenuLinks = styled.a<{ active: boolean; }>`
@@ -77,4 +82,17 @@ export const MenuLinks = styled.a<{ active: boolean; }>`
 
 export const LinkTitle = styled.span`
   margin-left: 16px
+`;
+
+
+export const SubMenu = styled.span`
+  color: #73d597;
+  margin-top: 0.5rem;
+  margin-left: 2.5rem;
+
+  &::before {
+    content: '-';
+    color: #fff;
+    margin-right: 0.5rem;
+  }
 `;

@@ -15,6 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "contexts/UiContext.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "contexts/UiContext.js", "pages/users/index.js"],
   "exclude": ["node_modules"]
 }

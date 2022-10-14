@@ -8,7 +8,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    min-height: 100vh;
+    /* min-height: 100%; */
+    /* overflow-x: hidden; */
   }
 
   a {

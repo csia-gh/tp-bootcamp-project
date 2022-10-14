@@ -57,3 +57,12 @@ export const PageTitle = styled.h1`
     display: inline-block;
   }
 `;
+
+export const Subtitle = styled.span`
+  color: #73d597;
+
+  &::before {
+    content: '- ';
+    color: #fff;
+  }
+`

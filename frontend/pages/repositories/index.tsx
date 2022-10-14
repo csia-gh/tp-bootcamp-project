@@ -4,7 +4,7 @@ import Layout from '../../components/Layout/Layout';
 import Pagination from '../../components/Pagination/Pagination';
 
 const dummy_repos = [{ "id": 1, "name": "Treeflex", "description": "Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.\n\nDuis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.", "language": "eblaza0", "contributions": 504 },
-{ "id": 2, "name": "Fix San", "description": "Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.\n\nMorbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.\n\nFusce consequat. Nulla nisl. Nunc nisl.", "language": "wlightbowne1", "contributions": 770 },
+{ "id": 2, "name": "Fix San", "description": "Praesent blandit.", "language": "wlightbowne1", "contributions": 770 },
 { "id": 3, "name": "Cardify", "description": "In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.", "language": "fpigny2", "contributions": 571 },
 { "id": 4, "name": "Namfix", "description": "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.\n\nFusce consequat. Nulla nisl. Nunc nisl.", "language": "dryley3", "contributions": 107 },
 { "id": 5, "name": "Treeflex", "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.", "language": "paspin4", "contributions": 964 },
@@ -104,26 +104,26 @@ const dummy_repos = [{ "id": 1, "name": "Treeflex", "description": "Donec diam n
 { "id": 99, "name": "Zontrax", "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\n\nNam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.", "language": "braithmill2q", "contributions": 878 },
 { "id": 100, "name": "Asoka", "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.\n\nVestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.\n\nDuis consequat dui nec nisi volutpat eleifend. Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus.", "language": "cgreenroa2r", "contributions": 439 }];
 
-export default function Home() {
-  const [posts, setPosts] = useState(dummy_repos);
+export default function Repositories() {
+  const [repositories] = useState(dummy_repos);
   // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [repositoriesPerPage] = useState(10);
 
   // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const indexOfLastPost = currentPage * repositoriesPerPage;
+  const indexOfFirstPost = indexOfLastPost - repositoriesPerPage;
+  const currentRepositories= repositories.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <Layout pageTitle="Repositories" >
-      <Cards repositories={currentPosts} />
+    <Layout pageTitle="Repositories" center={false}>
+      <Cards repositories={currentRepositories} />
       <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={posts.length}
+        itemsPerPage={repositoriesPerPage}
+        totalItems={repositories.length}
         paginate={paginate}
         currentPage={currentPage}
       />

@@ -2,9 +2,14 @@ import styled from 'styled-components';
 
 
 export const Pagination = styled.nav`
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-  margin-left: 0.5rem;
+    margin: 2rem 0;
+
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.large}) {
+    margin-left: 1.5rem;  
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
 `;
 
 export const Button = styled.button<{ active: boolean; }>`
@@ -18,6 +23,11 @@ export const Button = styled.button<{ active: boolean; }>`
   cursor: pointer;
   margin-bottom: 0.5rem;
 
+  @media (min-width: ${({ theme }) => theme.breakpoints.large}) {
+    padding: 12px 24px;
+    font-size: 18px;
+  }
+
   &:hover, 
   &:active {
     background-color: ${({ theme }) => theme.colors.secondary};
@@ -25,6 +35,7 @@ export const Button = styled.button<{ active: boolean; }>`
 `;
 export const Ul = styled.ul`
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   list-style: none;
   margin: 0;

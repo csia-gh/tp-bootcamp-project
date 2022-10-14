@@ -1,8 +1,24 @@
-import { FaBars } from 'react-icons/fa'
+import { useRouter } from 'next/router';
 
-import * as styles from './Navbar.styles'
+import { FaBars } from 'react-icons/fa';
 
-function Navbar({ isOpen, setIsOpen, pageTitle }) {
+import Search from '../Search/Search';
+
+import * as styles from './Navbar.styles';
+
+function Subtitle({ subtitle }) {
+  if (subtitle) {
+    return <styles.Subtitle>{subtitle}</styles.Subtitle>;
+  } else {
+    return <span></span>;
+  }
+}
+
+function Navbar({ isOpen, setIsOpen, pageTitle, subtitle }) {
+  const router = useRouter();
+
+  const showSearch = router.pathname === '/repositories';
+
   return (
     <styles.Navbar>
       <styles.NavbarLeft open={isOpen}>
@@ -11,11 +27,11 @@ function Navbar({ isOpen, setIsOpen, pageTitle }) {
         </styles.OpenMenu>
       </styles.NavbarLeft>
       <styles.NavbarRight>
-        <styles.PageTitle>{pageTitle}</styles.PageTitle>
-        {/* <SearchContainer /> */}
+        <styles.PageTitle>{pageTitle} <Subtitle subtitle={subtitle} /></styles.PageTitle>
+        {showSearch && <Search />}
       </styles.NavbarRight>
     </styles.Navbar>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

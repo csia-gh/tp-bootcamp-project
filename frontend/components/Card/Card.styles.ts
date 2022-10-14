@@ -6,8 +6,7 @@ export const Card = styled.a`
   max-width: 90%;
   min-height: 281px;
   height: 100%;
-
-  margin: auto;
+  width: 100%;
 
 
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -21,6 +20,10 @@ export const Card = styled.a`
 
   &:hover {
     box-shadow: -2px -5px 4px rgba(0, 0, 0, 0.25), 2px 5px 5px rgba(115, 213, 151, 0.4);
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    margin: auto;
   }
 `;
 
