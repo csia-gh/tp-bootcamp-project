@@ -11,13 +11,15 @@ const sidebarLinks: {
       title: 'Repositories',
       path: '/repositories',
       icon: <FaDatabase />,
-      subMenu: 'Contributions',
+      subMenu: 'Contributors',
       testPath: (path) => /^\/repositories\/(\d+)/.test(path)
     },
     {
       title: 'Users',
       path: '/users',
-      icon: <FaUsers />
+      icon: <FaUsers />,
+      subMenu: 'Contributions',
+      testPath: (path) => /^\/users\/(\w+)/.test(path)
     },
   ];
 

@@ -15,6 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "contexts/UiContext.js", "pages/users/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "contexts/UiContext.js", "pages/users/index.tsx", "pages/repositories/index.tsx", "components/PaginatedItems/PaginatedItems.jsx", "pages/repositories/[id]/index.tsx", "components/Search/Search.jsx", "components/Layout/Layout.jsx"],
   "exclude": ["node_modules"]
 }

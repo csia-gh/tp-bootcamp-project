@@ -11,4 +11,4 @@ import { User } from 'src/entities/user.entity';
   providers: [DataService],
   controllers: [DataController],
 })
-export class DataModule { }
+export class DataModule {}

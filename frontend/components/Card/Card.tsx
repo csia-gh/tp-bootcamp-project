@@ -2,7 +2,7 @@ import * as styles from './Card.styles';
 import Link from 'next/link';
 import { FaDatabase, FaKeyboard, FaStar } from 'react-icons/fa';
 
-function Card({ id, repoName, description, language, contributions }) {
+function Card({ id, repoName, description, language, contributorsCount, stars, owner }) {
   return (
     <Link as={`/repositories/${id}`} href="/repositories/[id]">
       <styles.Card>
@@ -10,12 +10,12 @@ function Card({ id, repoName, description, language, contributions }) {
           <FaDatabase style={{ fontSize: '45px' }} />
           <div>
             <span style={{ fontSize: '28px', fontWeight: '600' }}>
-              {repoName} #{id}
+              {repoName.split('/')[1]}
             </span>
-            <span style={{ fontWeight: '400' }}>Owner</span>
           </div>
         </styles.CardHeader>
         <styles.CardContent>
+          <h2><span>Owner:</span> {owner.login}</h2>
           {description}
         </styles.CardContent>
         <styles.CardFooter>
@@ -25,11 +25,11 @@ function Card({ id, repoName, description, language, contributions }) {
             </div>
             <div>
               <FaStar style={{ color: '#73D597', marginRight: '0.5rem' }} />{' '}
-              1,4k
+              {stars}
             </div>
           </styles.CardFooterLeft>
           <styles.CardFooterRight>
-            Contributions: <span>{contributions}</span>
+            Contributors: <span>{contributorsCount}</span>
           </styles.CardFooterRight>
         </styles.CardFooter>
       </styles.Card>

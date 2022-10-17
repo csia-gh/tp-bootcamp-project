@@ -11,6 +11,7 @@ export const usersTableColumns: ITableColumn[] = [
 ];
 
 export const contributionsTableColumns: ITableColumn[] = [
+  { key: 'id', title: 'Id' },
+  { key: 'avatar', title: 'Avatar' },
   { key: 'login', title: 'User Login' },
-  { key: 'line_count', title: 'Line Count' },
 ];

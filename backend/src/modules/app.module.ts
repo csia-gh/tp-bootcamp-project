@@ -1,4 +1,10 @@
-import { CacheInterceptor, CacheModule, MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import {
+  CacheInterceptor,
+  CacheModule,
+  MiddlewareConsumer,
+  Module,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RepositoryEntity } from '../entities/repository.entity';
@@ -27,17 +33,12 @@ import * as winston from 'winston';
         format: winston.format.combine(
           winston.format.colorize(),
           winston.format.errors({
-            stack: true
+            stack: true,
           }),
           winston.format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss'
+            format: 'YYYY-MM-DD HH:mm:ss',
           }),
-          winston.format.printf(({
-            level,
-            message,
-            timestamp,
-            stack
-          }) => {
+          winston.format.printf(({ level, message, timestamp, stack }) => {
             return `${timestamp} ${level}: ${stack || message}`;
           }),
         ),
@@ -45,7 +46,7 @@ import * as winston from 'winston';
       inject: [ConfigService],
     }),
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     CacheModule.register({
       options: { ttl: 300 },
@@ -54,12 +55,18 @@ import * as winston from 'winston';
       host: config.redis_host,
       port: config.redis_port,
     }),
-    TypeOrmModule.forRoot(ormConfig), TypeOrmModule.forFeature([User, RepositoryEntity]), DataModule],
+    TypeOrmModule.forRoot(ormConfig),
+    TypeOrmModule.forFeature([User, RepositoryEntity]),
+    DataModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_INTERCEPTOR,
-    useClass: CacheInterceptor
-  },],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

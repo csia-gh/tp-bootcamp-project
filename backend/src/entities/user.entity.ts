@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
 import { RepositoryEntity } from './repository.entity';
 
 @Entity()
@@ -27,6 +27,6 @@ export class User {
   @OneToMany(() => RepositoryEntity, (repository) => repository.owner)
   repositories: RepositoryEntity[];
 
-  @ManyToMany(() => RepositoryEntity, repository => repository.contributors)
+  @ManyToMany(() => RepositoryEntity, (repository) => repository.contributors)
   contributions: RepositoryEntity[];
 }

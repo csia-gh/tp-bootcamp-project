@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider, DefaultTheme } from 'styled-components';
 import GlobalStyle from '../components/globalstyles';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
 import { UiProvider } from '../contexts/UiContext';
-import store from '../store';
+import store from '../store/store';
 
 const theme: DefaultTheme = {
   colors: {

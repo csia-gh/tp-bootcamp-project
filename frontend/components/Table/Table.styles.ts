@@ -59,12 +59,13 @@ export const Table = styled.table`
   }
 
   & th {
-    padding: .5rem .75rem;
+    padding: 1rem;
     text-align: center;
+    font-size: 14px;
   }
 
   & td {
-    padding: .75rem .1rem;
+    padding: 1rem;
     text-align: center;
     font-weight: 400;
   }
@@ -83,7 +84,8 @@ export const Table = styled.table`
     font-size: 14px;
     
     & th {
-      padding: .75rem 1rem;
+      padding: 1.5rem;
+      font-size: 16px;
     }
 
     & td {
@@ -93,9 +95,9 @@ export const Table = styled.table`
 
   @media (min-width: ${({ theme }) => theme.breakpoints.large}) {
     font-size: 16px;
-    
+
     & th {
-      padding: 1rem 2rem;
+      font-size: 18px;
     }
 
     & td {
@@ -104,6 +106,11 @@ export const Table = styled.table`
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+
+    & th {
+      font-size: 22px;
+    }
+
     font-size: 20px;
   }
 `;

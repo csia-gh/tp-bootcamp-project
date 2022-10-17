@@ -1,18 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
+
+interface UiSliceState {
+  isOpen: boolean;
+};
+
+const initialState: UiSliceState = {
+  isOpen: false
+};
 
 const uiSlice = createSlice({
   name: 'ui',
-  initialState: { isOpen: false },
+  initialState,
   reducers: {
     close(state) {
-      state.isOpen = false
+      state.isOpen = false;
     },
     open(state) {
-      state.isOpen = true
+      state.isOpen = true;
     }
   },
-})
+});
 
-export const uiActions = uiSlice.actions
+export const uiActions = uiSlice.actions;
 
-export default uiSlice
+export default uiSlice;

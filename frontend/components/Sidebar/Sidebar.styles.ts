@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Sidebar = styled.aside<{ open: boolean; }>`
+export const Sidebar = styled.aside<{ isOpen: boolean; }>`
   position: relative;
   z-index: 100;
   width: 100vw;
@@ -9,7 +9,7 @@ export const Sidebar = styled.aside<{ open: boolean; }>`
   background-color: ${({ theme }) => theme.colors.secondary};
   position: fixed;
   top: 0;
-  left: ${({ open }) => (open ? '0' : '-100%')};
+  left: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
   transition: 0.6s;
 
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);

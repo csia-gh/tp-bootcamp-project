@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const Card = styled.a`
   cursor: pointer;
-  max-width: 90%;
   min-height: 281px;
   height: 100%;
   width: 100%;
@@ -53,6 +52,17 @@ export const CardContent = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+
+  h2 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    
+    span {
+      font-weight: 400;
+      margin-right: 0.5rem;
+    }
+
+  }
 `;
 export const CardFooter = styled.div`
   margin-top: auto;
