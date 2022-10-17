@@ -9,7 +9,7 @@ function Cards({ repositories }) {
   return (
     <styles.Cards open={isOpen}>
       {
-        repositories.map((repo) => (<Card  key={repo.id} id={repo.id} repoName={repo.name} language={repo.language} description={repo.description} contributions={repo.contributions} />))
+        repositories.map((repo) => (<Card  key={repo.id} id={repo.id} repoName={repo.full_name} language={repo.language} description={repo.description} contributorsCount={repo.contributorsCount} stars={repo.stargazers_count} owner={repo.owner}/>))
       }
     </styles.Cards>
   );

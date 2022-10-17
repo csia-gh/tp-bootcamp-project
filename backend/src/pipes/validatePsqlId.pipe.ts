@@ -1,9 +1,15 @@
-import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  PipeTransform,
+  Injectable,
+  ArgumentMetadata,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { PSQL_MAX } from 'src/constants/psqlConstants';
 
 @Injectable()
 export class ValidatePsqlId implements PipeTransform {
-  transform(value: any, metadata: ArgumentMetadata) {
+  transform(value: any) {
     if (value < PSQL_MAX) {
       return value;
     }

@@ -7,17 +7,29 @@ export const logOnRequest = (request: Request, logger: Logger) => {
   delete headersMod.authorization;
   delete headersMod.cookie;
   logger.log('info', {
-    message: `${method} ${path}\nrequest-headers: ${JSON.stringify(headersMod, null, 4)}\nrequest-body: ${JSON.stringify(body, null, 4)}`,
+    message: `${method} ${path}\nrequest-headers: ${JSON.stringify(
+      headersMod,
+      null,
+      4,
+    )}\nrequest-body: ${JSON.stringify(body, null, 4)}`,
   });
 };
 
-export const logOnResponse = (response: Response, logger: Logger, body: any) => {
+export const logOnResponse = (
+  response: Response,
+  logger: Logger,
+  body: any,
+) => {
   const { statusCode } = response;
   const headersMod = { ...response.getHeaders() };
   delete headersMod.authorization;
   delete headersMod.cookie;
 
-  const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(headersMod, null, 4)}\nresponse-body: ${body}`;
+  const logContent = `${statusCode} \nresponse-headers: ${JSON.stringify(
+    headersMod,
+    null,
+    4,
+  )}\nresponse-body: ${body}`;
 
   if (statusCode >= 500) {
     logger.error({
@@ -33,4 +45,3 @@ export const logOnResponse = (response: Response, logger: Logger, body: any) => 
     });
   }
 };
-

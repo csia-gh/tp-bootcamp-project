@@ -9,20 +9,24 @@ import { RepositoryResponse } from '../types/RepositoryResponse';
 export class AppService {
   constructor(
     private readonly connection: DataSource,
-    @InjectRepository(RepositoryEntity) private repositoryRepo: Repository<RepositoryEntity>,
+    @InjectRepository(RepositoryEntity)
+    private repositoryRepo: Repository<RepositoryEntity>,
     @InjectRepository(User) private userRepo: Repository<User>,
-  ) { }
+  ) {}
 
   private async filterRepositories(key: string, value: string) {
-    const queryBuilder = this.repositoryRepo
-      .createQueryBuilder('repository');
+    const queryBuilder = this.repositoryRepo.createQueryBuilder('repository');
 
     switch (key) {
       case 'name':
-        queryBuilder.where('repository.full_name = :name', { name: `facebook/${value}` });
+        queryBuilder.where('repository.full_name like :name', {
+          name: `%facebook/${value}%`,
+        });
         break;
       case 'language':
-        queryBuilder.where('repository.language = :language', { language: value });
+        queryBuilder.where('repository.language = :language', {
+          language: value,
+        });
         break;
       default:
         throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -30,6 +34,7 @@ export class AppService {
 
     return await queryBuilder
       .leftJoinAndSelect('repository.contributors', 'contributors')
+      .leftJoinAndSelect('repository.owner', 'owner')
       .getMany();
   }
 
@@ -39,7 +44,7 @@ export class AppService {
 
     if (isEmpty) {
       repositories = await this.repositoryRepo.find({
-        relations: ['owner', 'contributors']
+        relations: ['owner', 'contributors'],
       });
     } else {
       const key = Object.keys(query)[0];
@@ -54,10 +59,15 @@ export class AppService {
     return this.buildRepositoryResponses(repositories);
   }
 
-  private buildRepositoryResponses(repositories: RepositoryEntity[]): RepositoryResponse[] {
-    return repositories.map(repository => {
+  private buildRepositoryResponses(
+    repositories: RepositoryEntity[],
+  ): RepositoryResponse[] {
+    return repositories.map((repository) => {
       const contributorsCount = repository.contributors.length;
-      const repostoryResponse = { ...repository, contributorsCount } as RepositoryResponse;
+      const repostoryResponse = {
+        ...repository,
+        contributorsCount,
+      } as RepositoryResponse;
       delete repostoryResponse.contributors;
       return repostoryResponse;
     });
@@ -66,19 +76,50 @@ export class AppService {
   async findContributors(id: number): Promise<User[]> {
     const repository = await this.repositoryRepo.findOne({
       where: { id },
-      relations: [
-        'contributors',
-      ]
+      relations: ['contributors'],
     });
 
     if (!repository) {
-      throw new HttpException('Repository does not exist', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'Repository does not exist',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     return repository.contributors;
   }
 
-  async findUsers(): Promise<User[]> {
-    return await this.userRepo.find();
+  async findUsers(query): Promise<User[]> {
+    const queryBuilder = this.userRepo.createQueryBuilder('user');
+    const name = query['name'];
+
+    if (!name) {
+      return await queryBuilder.getMany();
+    }
+
+    const users = await queryBuilder
+      .where('user.login like :name', {
+        name: `%${name}%`,
+      })
+      .getMany();
+
+    if (!users.length) {
+      throw new HttpException('No users found', HttpStatus.NOT_FOUND);
+    }
+
+    return users;
+  }
+
+  async findContributions(username: string): Promise<RepositoryResponse[]> {
+    const user = await this.userRepo.findOne({
+      where: { login: username },
+      relations: ['contributions'],
+    });
+
+    if (!user) {
+      throw new HttpException('User does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    return this.buildRepositoryResponses(user.contributions);
   }
 }

@@ -8,6 +8,7 @@ const Container = styled.div<{ center: boolean; }>`
   align-items: ${({ center }) => center ? 'center' : 'flex-start'};
   width: 90%;
   overflow-x: hidden;
+  padding: 2rem 0;
 `;
 
 export { Container };

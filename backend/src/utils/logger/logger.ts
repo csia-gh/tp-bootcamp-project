@@ -1,22 +1,7 @@
-const {
-  createLogger,
-  format,
-  transports,
-} = require('winston');
-const {
-  timestamp,
-  combine,
-  printf,
-  colorize,
-  prettyPrint
-} = format;
+const { createLogger, format, transports } = require('winston');
+const { timestamp, combine, printf, colorize, prettyPrint } = format;
 
-
-const logFormat = printf(({
-  level,
-  message,
-  timestamp,
-}) => {
+const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
@@ -25,11 +10,9 @@ export const logger = createLogger({
     colorize(),
     prettyPrint(),
     timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
+      format: 'YYYY-MM-DD HH:mm:ss',
     }),
-    logFormat
+    logFormat,
   ),
-  transports: [
-    new transports.Console()
-  ]
+  transports: [new transports.Console()],
 });

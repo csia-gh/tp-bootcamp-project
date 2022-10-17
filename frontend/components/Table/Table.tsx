@@ -1,6 +1,9 @@
 import * as styles from './Table.styles';
+import Link from 'next/link';
 
-export default function Table({ columns, list }) {
+export default function Table({ columns, list, toHref, objectKey }) {
+  const isEmpty = !list.length;
+
   return (
     <styles.TableContainer>
       <styles.Table>
@@ -14,19 +17,20 @@ export default function Table({ columns, list }) {
           </tr>
         </thead>
         <tbody>
-          {
-            list.map((row, index) => (
-              <tr key={index}>
+          {isEmpty && <tr><td style={{borderRadius: "0 0 25px 25px"}} colSpan={columns.length}>No data</td></tr>}
+          {!isEmpty && list.map((row, rowIndex) => (
+            <Link key={row['id']} as={`/users/${row[objectKey]}`} href={toHref}>
+              <tr style={{ cursor: 'pointer' }}>
                 {
-                  columns.map((column, index) => (
-                    <td key={index}>{row[column.key]}</td>
+                  columns.map((column, columnIndex) => (
+                    <td key={rowIndex + columnIndex}>{row[column.key]}</td>
                   ))
                 }
               </tr>
-            ))
+            </Link>))
           }
         </tbody >
       </styles.Table>
-    </styles.TableContainer>
+    </styles.TableContainer >
   );
 }

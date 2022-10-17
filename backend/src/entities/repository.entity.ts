@@ -1,4 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 
 @Entity({ name: 'repository' })
@@ -7,7 +14,8 @@ export class RepositoryEntity {
   id: number;
 
   @ManyToOne(() => User, (user) => user.repositories, {
-    cascade: ["insert"],
+    cascade: ['insert'],
+    eager: true,
   })
   owner: User;
 
@@ -27,7 +35,8 @@ export class RepositoryEntity {
   stargazers_count: number;
 
   @ManyToMany(() => User, (user) => user.contributions, {
-    cascade: ["insert"],
+    cascade: ['insert'],
+    eager: true,
   })
   @JoinTable({ name: 'contributions' })
   contributors: User[];

@@ -14,17 +14,18 @@ export class DataService {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
     private readonly connection: DataSource,
-    @InjectRepository(RepositoryEntity) private repositoryRepo: Repository<RepositoryEntity>,
+    @InjectRepository(RepositoryEntity)
+    private repositoryRepo: Repository<RepositoryEntity>,
     @InjectRepository(User) private userRepo: Repository<User>,
-  ) { }
+  ) {}
 
   async makeRequest(url = this.apiUrl, method = 'GET', data = {}) {
     const res = await this.httpService.axiosRef.get(url, {
       method,
       headers: {
-        Authorization: `Token ${this.configService.get('GITHUB_ACCESS_TOKEN')}`
+        Authorization: `Token ${this.configService.get('GITHUB_ACCESS_TOKEN')}`,
       },
-      data
+      data,
     });
 
     return res.data;
@@ -44,7 +45,10 @@ export class DataService {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
       console.error(error);
-      throw new HttpException('Error while saving repositories', HttpStatus.SERVICE_UNAVAILABLE);
+      throw new HttpException(
+        'Error while saving repositories',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
   }
 
@@ -55,7 +59,10 @@ export class DataService {
       repositoriesData = await this.makeRequest();
     } catch (error) {
       // log...
-      throw new HttpException('Unable to get repositories', HttpStatus.SERVICE_UNAVAILABLE);
+      throw new HttpException(
+        'Unable to get repositories',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
 
     const repositories = await this.collectRepositories(repositoriesData);
@@ -64,22 +71,24 @@ export class DataService {
   }
 
   async collectRepositories(repositoriesData) {
-    const repositories = await Promise.all(repositoriesData.map(async repositoryData => {
-      const owner = this.createUser(repositoryData.owner);
+    const repositories = await Promise.all(
+      repositoriesData.map(async (repositoryData) => {
+        const owner = this.createUser(repositoryData.owner);
 
-      const contributors = await this.getContributors(repositoryData);
+        const contributors = await this.getContributors(repositoryData);
 
-      return this.repositoryRepo.create({
-        id: repositoryData.id,
-        owner,
-        full_name: repositoryData.full_name,
-        description: repositoryData.description,
-        html_url: repositoryData.html_url,
-        language: repositoryData.language,
-        stargazers_count: repositoryData.stargazers_count,
-        contributors: contributors
-      });
-    }));
+        return this.repositoryRepo.create({
+          id: repositoryData.id,
+          owner,
+          full_name: repositoryData.full_name,
+          description: repositoryData.description,
+          html_url: repositoryData.html_url,
+          language: repositoryData.language,
+          stargazers_count: repositoryData.stargazers_count,
+          contributors: contributors,
+        });
+      }),
+    );
 
     return repositories;
   }
@@ -88,13 +97,20 @@ export class DataService {
     let contributorsData;
 
     try {
-      contributorsData = await this.makeRequest(repositoryData.contributors_url);;
+      contributorsData = await this.makeRequest(
+        repositoryData.contributors_url,
+      );
     } catch (error) {
       // log...
-      throw new HttpException('Unable to get contributors', HttpStatus.SERVICE_UNAVAILABLE);
+      throw new HttpException(
+        'Unable to get contributors',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
     }
 
-    return contributorsData.map(contributorData => this.createUser(contributorData));
+    return contributorsData.map((contributorData) =>
+      this.createUser(contributorData),
+    );
   }
 
   createUser(data) {

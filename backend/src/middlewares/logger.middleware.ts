@@ -7,7 +7,7 @@ import { logOnRequest, logOnResponse } from '../logger/logger';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-  ) { }
+  ) {}
 
   use(request: Request, response: Response, next: NextFunction): void {
     logOnRequest(request, this.logger);
@@ -37,5 +37,5 @@ export class LoggerMiddleware implements NestMiddleware {
     };
 
     next();
-  };
+  }
 }

@@ -2,20 +2,15 @@ import { useRouter } from "next/router";
 
 import Link from 'next/link';
 import * as styles from './Sidebar.styles';
-import { FaCampground, FaTimes, FaRegWindowMinimize } from 'react-icons/fa';
+import { FaCampground, FaTimes } from 'react-icons/fa';
 
 import sidebarLinks from '../../config/sidebarLinks';
 
-function Sidebar({ isOpen, setIsOpen }) {
-
-
+function Sidebar({ isOpen, close }) {
   const router = useRouter();
 
-
-
-
   return (
-    <styles.Sidebar open={isOpen}>
+    <styles.Sidebar isOpen={isOpen}>
       <styles.SidebarHeader>
         <Link href="/">
           <a>
@@ -24,7 +19,7 @@ function Sidebar({ isOpen, setIsOpen }) {
           </a>
         </Link>
 
-        <styles.CloseMenu onClick={() => setIsOpen(false)}>
+        <styles.CloseMenu onClick={close}>
           <FaTimes />
         </styles.CloseMenu>
       </styles.SidebarHeader>
