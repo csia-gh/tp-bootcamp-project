@@ -3,8 +3,8 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import { RepositoryEntity } from 'src/entities/repository.entity';
-import { User } from 'src/entities/user.entity';
+import { RepositoryEntity } from '../entities/repository.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class DataService {

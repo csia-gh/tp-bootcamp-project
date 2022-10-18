@@ -1,11 +1,10 @@
 import {
   PipeTransform,
   Injectable,
-  ArgumentMetadata,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { PSQL_MAX } from 'src/constants/psqlConstants';
+import { PSQL_MAX } from '../constants/psqlConstants';
 
 @Injectable()
 export class ValidatePsqlId implements PipeTransform {

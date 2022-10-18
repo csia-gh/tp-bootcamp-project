@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DataService } from '../services//data.service';
 
 @ApiTags('Sync database')
@@ -11,7 +11,7 @@ export class DataController {
     summary: 'Collect the data from the GitHub API and update the database',
   })
   @Get('sync')
-  async syncDB(): Promise<any> {
+  async syncDB(): Promise<string> {
     return this.dataService.syncDB();
   }
 }
