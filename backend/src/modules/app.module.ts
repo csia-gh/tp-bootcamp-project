@@ -19,6 +19,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from '../middlewares/logger.middleware';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import { UserModule } from './user.module';
+import { RepositoryModule } from './repository.module';
 
 @Module({
   imports: [
@@ -58,6 +60,8 @@ import * as winston from 'winston';
     TypeOrmModule.forRoot(ormConfig),
     TypeOrmModule.forFeature([User, RepositoryEntity]),
     DataModule,
+    UserModule,
+    RepositoryModule,
   ],
   controllers: [AppController],
   providers: [
