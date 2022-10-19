@@ -1,6 +1,6 @@
 import * as styles from './TableImage.styles';
 
-export interface TableImageProps extends React.PropsWithChildren {
+export interface TableImageProps {
   src: string;
   alt: string;
 }

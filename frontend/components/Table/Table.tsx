@@ -1,7 +1,10 @@
 import * as styles from './Table.styles';
 import Link from 'next/link';
+import { ITableColumn } from '../../config/table';
 
-export default function Table({ columns, list, toHref, objectKey }) {
+interface Props { columns: ITableColumn[]; list: any[]; toHref: string; objectKey: string; }
+
+export default function Table({ columns, list, toHref, objectKey }: Props) {
   const isEmpty = !list.length;
 
   return (
@@ -17,7 +20,7 @@ export default function Table({ columns, list, toHref, objectKey }) {
           </tr>
         </thead>
         <tbody>
-          {isEmpty && <tr><td style={{borderRadius: "0 0 25px 25px"}} colSpan={columns.length}>No data</td></tr>}
+          {isEmpty && <tr><td style={{ borderRadius: "0 0 25px 25px" }} colSpan={columns.length}>No data</td></tr>}
           {!isEmpty && list.map((row, rowIndex) => (
             <Link key={row['id']} as={`/users/${row[objectKey]}`} href={toHref}>
               <tr style={{ cursor: 'pointer' }}>

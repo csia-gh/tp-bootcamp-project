@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
-import * as styles from './Search.styles'
-import { FaSearch } from 'react-icons/fa'
-import { MdOutlineClear } from 'react-icons/md'
-import { fetchRepositoryData } from '../../store/repositories-slice'
+import * as styles from './Search.styles';
+import { FaSearch } from 'react-icons/fa';
+import { MdOutlineClear } from 'react-icons/md';
+import { fetchRepositoryData } from '../../store/repositories-slice';
 import { fetchUsersData } from '../../store/users-slice';
+import { useAppDispatch } from '../../store/hooks';
 
-let isInitial = true
+let isInitial = true;
 
 function Search() {
-  const { asPath } = useRouter()
-  const dispatch = useDispatch()
-  const [searchValue, setSearchValue] = useState('')
+  const { asPath } = useRouter();
+  const dispatch = useAppDispatch();
+  const [searchValue, setSearchValue] = useState('');
   const [icon, setIcon] = useState(
     <FaSearch
       style={{
@@ -21,31 +21,31 @@ function Search() {
         height: '20px',
       }}
     />,
-  )
-  let handleSubmit = () => {}
+  );
+  let handleSubmit: (event) => void;
 
   if (asPath === '/users') {
     handleSubmit = (event) => {
-      event.preventDefault()
-  
+      event.preventDefault();
+
       if (searchValue.trim().length > 0) {
-        dispatch(fetchUsersData(searchValue))
+        dispatch(fetchUsersData(searchValue));
       }
-    }
+    };
   } else if (asPath === '/repositories') {
     handleSubmit = (event) => {
-      event.preventDefault()
-  
+      event.preventDefault();
+
       if (searchValue.trim().length > 0) {
-        dispatch(fetchRepositoryData(searchValue))
+        dispatch(fetchRepositoryData(searchValue));
       }
-    }
+    };
   }
 
   useEffect(() => {
     if (isInitial) {
-      isInitial = false
-      return
+      isInitial = false;
+      return;
     }
 
     if (searchValue.trim() !== '') {
@@ -57,7 +57,7 @@ function Search() {
           }}
           onClick={() => setSearchValue('')}
         />,
-      )
+      );
     } else {
       setIcon(
         <FaSearch
@@ -66,15 +66,15 @@ function Search() {
             height: '20px',
           }}
         />,
-      )
+      );
 
       if (asPath === '/users') {
-        dispatch(fetchUsersData(searchValue))
+        dispatch(fetchUsersData(searchValue));
       } else {
-        dispatch(fetchRepositoryData())
+        dispatch(fetchRepositoryData());
       }
     }
-  }, [searchValue])
+  }, [searchValue]);
 
   return (
     <styles.Container onSubmit={handleSubmit}>
@@ -91,7 +91,7 @@ function Search() {
         {icon}
       </styles.SearchButton>
     </styles.Container>
-  )
+  );
 }
 
-export default Search
+export default Search;

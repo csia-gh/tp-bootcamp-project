@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../../components/Layout/Layout';
 import PaginatedItems from '../../../components/PaginatedItems/PaginatedItems';
 import TableImage from '../../../components/TableImage/TableImage';
@@ -7,15 +7,21 @@ import { contributionsTableColumns } from '../../../config/table';
 import { fetchContributorsData } from '../../../store/contributors-slice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { selectContributors } from '../../../store/store';
+import { useRouter } from 'next/router';
 
-export default function Contributors({ id }) {
+export default function Contributors() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const contributorsPlain = useAppSelector(selectContributors);
-  const pageTitle = `Repository #${id}`;
+  const [pageTitle, setPageTitle] = useState('Repository ');
 
   useEffect(() => {
-    dispatch(fetchContributorsData(id));
-  }, [dispatch]);
+    const { id } = router.query;
+
+    setPageTitle(`Repository #${id}`);
+
+    dispatch(fetchContributorsData(+id));
+  }, [dispatch, router]);
 
   const contributors: IUserWithImage[] = contributorsPlain
     ? contributorsPlain.map((user): IUserWithImage => {
@@ -35,11 +41,3 @@ export default function Contributors({ id }) {
     </Layout>
   );
 }
-
-Contributors.getInitialProps = async ({ query }) => {
-  const { id } = query;
-
-  return {
-    id,
-  };
-};

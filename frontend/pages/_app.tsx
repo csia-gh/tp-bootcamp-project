@@ -3,7 +3,6 @@ import { ThemeProvider, DefaultTheme } from 'styled-components';
 import GlobalStyle from '../components/globalstyles';
 import { Provider } from 'react-redux';
 
-import { UiProvider } from '../contexts/UiContext';
 import store from '../store/store';
 
 const theme: DefaultTheme = {
@@ -24,12 +23,10 @@ const theme: DefaultTheme = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <UiProvider>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </UiProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </Provider>
   );
 }

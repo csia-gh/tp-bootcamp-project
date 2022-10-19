@@ -20,5 +20,6 @@ export type AppDispatch = typeof store.dispatch;
 export const selectUsers = (state: RootState) => state.users.items;
 export const selectRepositories = (state: RootState) => state.repositories.items;
 export const selectContributors = (state: RootState) => state.contributors.items;
+export const selectIsSidebarOpen = (state: RootState) => state.ui.isSidebarOpen;
 
 export default store;

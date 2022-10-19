@@ -19,10 +19,8 @@ export default function Repositories() {
       {repos?.length ? (
         <PaginatedItems
           itemsPerPage={8}
-          columns={0}
           items={repos}
-          cards={true}
-        />
+          cards={true} toHref={''} objectKey={''} />
       ) : (
         <h2>No repositories found</h2>
       )}

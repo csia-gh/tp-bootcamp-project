@@ -1,8 +1,19 @@
 import * as styles from './Card.styles';
 import Link from 'next/link';
 import { FaDatabase, FaKeyboard, FaStar } from 'react-icons/fa';
+import { IUser } from '../../models/User';
 
-function Card({ id, repoName, description, language, contributorsCount, stars, owner }) {
+interface Props {
+  id: number;
+  repoName: string;
+  description: string;
+  language: string;
+  contributorsCount: number;
+  stars: number;
+  owner: IUser;
+}
+
+function Card({ id, repoName, description, language, contributorsCount, stars, owner }: Props) {
   return (
     <Link as={`/repositories/${id}`} href="/repositories/[id]">
       <styles.Card>

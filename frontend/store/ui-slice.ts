@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UiSliceState {
-  isOpen: boolean;
+  isSidebarOpen: boolean;
 };
 
 const initialState: UiSliceState = {
-  isOpen: false
+  isSidebarOpen: false
 };
 
 const uiSlice = createSlice({
@@ -13,10 +13,10 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     close(state) {
-      state.isOpen = false;
+      state.isSidebarOpen = false;
     },
     open(state) {
-      state.isOpen = true;
+      state.isSidebarOpen = true;
     }
   },
 });

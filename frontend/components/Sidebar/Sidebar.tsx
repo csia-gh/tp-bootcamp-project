@@ -6,7 +6,9 @@ import { FaCampground, FaTimes } from 'react-icons/fa';
 
 import sidebarLinks from '../../config/sidebarLinks';
 
-function Sidebar({ isOpen, close }) {
+interface Props { isOpen: boolean; close: () => void; }
+
+function Sidebar({ isOpen, close }: Props) {
   const router = useRouter();
 
   return (
